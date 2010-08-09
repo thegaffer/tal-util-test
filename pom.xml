@@ -21,4 +21,65 @@
 		<version>[4,5)</version>
 	</dependency>
   </dependencies>
+  
+  <build>
+  	<plugins>
+  	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0</version>
+        <configuration>
+          <tagBase>https://dev.tpspencer.org/svn/tal/tal-util-test/tags</tagBase>
+        </configuration>
+      </plugin>
+	</plugins>
+  </build>
+  
+  <distributionManagement>
+    <repository>
+      <id>releaseRepo</id>
+      <name>Releases Repository</name>
+      <url>scpexe://tps.tpspencer.com/var/maven/repo/</url>
+      <layout>default</layout>
+    </repository>
+    <snapshotRepository>
+      <id>snapshotRepo</id>
+      <name>Snapshot Snapshots</name>
+      <url>scpexe://tps.tpspencer.com/var/maven/snap_repo/</url>
+      <layout>legacy</layout>
+    </snapshotRepository>
+  
+    <site>
+      <id>siteServer</id>
+      <url>scpexe://tps.tpspencer.com/home/tspencer/site/tal-util-test</url>
+    </site>
+  </distributionManagement>
+  
+  <developers>
+  	<developer>
+  		<id>TPS</id>
+  		<name>Tom Spencer</name>
+  		<email>tom@tpspencer.com</email>
+  		<url>http://www.tpspencer.com</url>
+  		<roles>
+  			<role>Architect</role>
+  			<role>Project Manager</role>
+  		</roles>
+  	</developer>
+  </developers>
+  
+  <scm>
+  	<connection>scm:svn:https://dev.tpspencer.org/svn/tal/tal-util-test/trunk/</connection>
+  	<developerConnection>scm:svn:https://dev.tpspencer.org/svn/tal/tal-util-test/trunk/</developerConnection>
+  	<url>https://dev.tpspencer.org/svn/tal/tal-util-test/trunk/</url>
+  </scm>
 </project>
