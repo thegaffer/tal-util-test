@@ -63,6 +63,7 @@
       <url>scpexe://tps.tpspencer.com/home/tspencer/site/tal-util-test</url>
     </site>
   </distributionManagement>
+  <url>http://www.tpspencer.com/site/tal-util-test/index.html</url>
   
   <developers>
   	<developer>
