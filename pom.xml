@@ -7,6 +7,15 @@
   <name>Tal Unit Test Tools</name>
   <description>Contains a set of common helpers for unit tests</description>
   
+  <licenses>
+	<license>
+		<name>Apache 2</name>
+		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		<distribution>repo</distribution>
+		<comments>A business-friendly OSS license</comments>
+	</license>
+  </licenses>
+  
   <dependencies>
   	<dependency>
   		<groupId>org.talframework.tal</groupId>
