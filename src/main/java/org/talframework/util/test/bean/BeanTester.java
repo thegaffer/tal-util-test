@@ -1,6 +1,27 @@
+/**
+ * Copyright (C) 2011 Tom Spencer <thegaffer@tpspencer.com>
+ *
+ * This file is part of TAL.
+ *
+ * TAL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * TAL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TAL. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Note on dates: Year above is the year this code was built. This
+ * project first created in 2008. Code was created between these two
+ * years inclusive.
+ */
 package org.talframework.util.test.bean;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,8 +35,8 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import org.talframework.util.beans.BeanDefinition;
+import org.talframework.util.beans.definition.BeanDefinitionsSingleton;
 
 /**
  * This class is a basic test for the behaviour of a
@@ -76,19 +97,23 @@ public abstract class BeanTester {
      * Ensure we can get/set every property and
      * when we get is the same we set!
      */
-    private static void testAccessorsAndMutators(Class<?> bean, Map<String, Object> values) {
-        BeanWrapper wrapper = new BeanWrapperImpl(bean);
+    private static void testAccessorsAndMutators(Class<?> beanClass, Map<String, Object> values) {
+        BeanDefinition def = BeanDefinitionsSingleton.getInstance().getDefinition(beanClass);
         
-        PropertyDescriptor[] props = wrapper.getPropertyDescriptors();
-        for( int i = 0 ; i < props.length ; i++ ) {
-            if( props[i].getWriteMethod() == null ) continue;
-            Object val = values != null ? values.get(props[i].getName()) : null;
-            if( val == null ) val = getSuitableValue(props[i].getPropertyType(), i);
-            wrapper.setPropertyValue(props[i].getName(), val);
+        Object bean = def.newInstance();
+        int seed = 56;
+        for( String prop : def.getProperties() ) {
+            if( !def.canRead(prop) ) continue;
+            if( !def.canWrite(prop) ) continue;
             
-            if( props[i].getReadMethod() == null ) continue;
-            Object val2 = wrapper.getPropertyValue(props[i].getName());
+            Object val = values != null ? values.get(prop) : null;
+            if( val == null ) val = getSuitableValue(def.getPropertyType(prop), seed);
+            
+            def.write(bean, prop, val);
+            Object val2 = def.read(bean, prop);
             Assert.assertEquals(val, val2);
+            
+            ++seed;
         }
     }
     
@@ -149,7 +174,12 @@ public abstract class BeanTester {
      * the bean to have the basic toString output
      */
     private static void testToString(Class<?> bean, Map<String, Object> values) {
-        // TODO:
+        try {
+            Assert.assertNotNull(bean.getDeclaredMethod("toString", (Class<?>[])null));
+        }
+        catch( NoSuchMethodException e) {
+            Assert.assertTrue("No toString method declared", false);
+        }
     }
     
     /**

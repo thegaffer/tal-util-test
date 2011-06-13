@@ -20,14 +20,32 @@
  * project first created in 2008. Code was created between these two
  * years inclusive.
  */
-package org.talframework.util.test.bean;
+package org.talframework.util.test.logging;
 
-import org.junit.Test;
+import org.apache.log4j.BasicConfigurator;
 
-public class TestBeanTester {
-
-    @Test
-    public void simple() {
-        BeanTester.testBean(SimpleBean.class);
+/**
+ * This class can be safely used at any point in unit tests to
+ * ensure that logging is configured. As there is a singleton
+ * instance of this class that only initialised logging once, we
+ * can be sure logging is not re-inisitalised.
+ * 
+ * @author Tom Spencer
+ */
+public class TestLogger {
+    private static final TestLogger INSTANCE = new TestLogger();
+    
+    /**
+     * Hidden constructor
+     */
+    private TestLogger() {
+        BasicConfigurator.configure();
+    }
+    
+    /**
+     * @return The single logger instance
+     */
+    public static TestLogger getInstance() {
+        return INSTANCE;
     }
 }
