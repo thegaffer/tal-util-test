@@ -1,0 +1,6 @@
+TAL Util Test; tal-util-test
+Copyright (C) Thomas Spencer, 2011
+License: GPL v3, see LICENSE
+
+TAL Util Test contains some low level for writing Unit Tests that I use in
+other projects.
